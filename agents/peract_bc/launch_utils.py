@@ -3,6 +3,7 @@
 # License: https://github.com/stepjam/ARM/LICENSE
 
 import logging
+import os
 from typing import List
 
 import numpy as np
@@ -233,6 +234,12 @@ def fill_replay(cfg: DictConfig,
         clip_model = build_model(model.state_dict())
         clip_model.to(device)
         del model
+
+    if num_demos == -1:
+        episodes_path = os.path.join(cfg.rlbench.demo_path, task, 'all_variations', 'episodes')
+        num_demos = len([d for d in os.listdir(episodes_path)
+                         if os.path.isdir(os.path.join(episodes_path, d))])
+        logging.info(f'Auto-detected {num_demos} demos for task {task}')
 
     logging.debug('Filling %s replay ...' % task)
     for d_idx in range(num_demos):
