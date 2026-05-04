@@ -8,7 +8,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-from pytorch3d import transforms as torch3d_tf
+try:
+    from pytorch3d import transforms as torch3d_tf
+except ModuleNotFoundError:
+    torch3d_tf = None
 from yarr.agents.agent import Agent, ActResult, ScalarSummary, \
     HistogramSummary, ImageSummary, Summary
 
@@ -659,7 +662,10 @@ class QAttentionPerActBCAgent(Agent):
             if not self._training:
                 k = k.replace('_qnet.module', '_qnet')
             if k in merged_state_dict:
-                merged_state_dict[k] = v
+                if merged_state_dict[k].shape == v.shape:
+                    merged_state_dict[k] = v
+                else:
+                    logging.warning("skipping %s: shape mismatch %s vs %s" % (k, v.shape, merged_state_dict[k].shape))
             else:
                 if '_voxelizer' not in k:
                     logging.warning("key %s not found in checkpoint" % k)

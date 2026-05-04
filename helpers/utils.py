@@ -1,13 +1,22 @@
 import numpy as np
-import pyrender
+try:
+    import pyrender
+    from pyrender.trackball import Trackball
+except ModuleNotFoundError:
+    pyrender = None
+    Trackball = None
 import torch
 import trimesh
-from pyrender.trackball import Trackball
 from rlbench.backend.const import DEPTH_SCALE
 from scipy.spatial.transform import Rotation
 from rlbench.backend.observation import Observation
 from rlbench import CameraConfig, ObservationConfig
-from pyrep.const import RenderMode
+try:
+    from pyrep.const import RenderMode
+except ModuleNotFoundError:
+    class RenderMode:
+        OPENGL = None
+        OPENGL3 = None
 from typing import List
 
 REMOVE_KEYS = ['joint_velocities', 'joint_positions', 'joint_forces',
@@ -221,7 +230,7 @@ def visualise_voxel(voxel_grid: np.ndarray,
                     rotation_amount: float = 0.0,
                     show: bool = False,
                     voxel_size: float = 0.1,
-                    offscreen_renderer: pyrender.OffscreenRenderer = None,
+                    offscreen_renderer=None,
                     show_bb: bool = False,
                     alpha: float = 0.5):
     scene = create_voxel_scene(
@@ -358,7 +367,7 @@ def extract_obs(obs: Observation,
     obs_dict['low_dim_state'] = np.array(robot_state, dtype=np.float32)
 
     # binary variable indicating if collisions are allowed or not while planning paths to reach poses
-    obs_dict['ignore_collisions'] = np.array([obs.ignore_collisions], dtype=np.float32)
+    obs_dict['ignore_collisions'] = np.array([np.squeeze(obs.ignore_collisions)], dtype=np.float32)
     for (k, v) in [(k, v) for k, v in obs_dict.items() if 'point_cloud' in k]:
         obs_dict[k] = v.astype(np.float32)
 

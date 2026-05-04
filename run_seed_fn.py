@@ -17,7 +17,10 @@ from yarr.utils.stat_accumulator import SimpleAccumulator
 from helpers.custom_rlbench_env import CustomRLBenchEnv, CustomMultiTaskRLBenchEnv
 import torch.distributed as dist
 
-from agents import c2farm_lingunet_bc
+try:
+    from agents import c2farm_lingunet_bc
+except ModuleNotFoundError:
+    c2farm_lingunet_bc = None
 from agents import peract_bc
 from agents import arm
 from agents.baselines import bc_lang, vit_bc_lang

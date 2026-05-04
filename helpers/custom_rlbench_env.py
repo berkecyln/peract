@@ -1,19 +1,35 @@
 from typing import Type, List
 
 import numpy as np
-from rlbench import ObservationConfig, ActionMode
+from rlbench import ObservationConfig
+try:
+    from rlbench import ActionMode
+except (ImportError, ModuleNotFoundError):
+    ActionMode = None
 from rlbench.backend.exceptions import InvalidActionError
 from rlbench.backend.observation import Observation
-from rlbench.backend.task import Task
+try:
+    from rlbench.backend.task import Task
+except (ImportError, ModuleNotFoundError):
+    Task = None
 from yarr.agents.agent import ActResult, VideoSummary, TextSummary
 from yarr.envs.rlbench_env import RLBenchEnv, MultiTaskRLBenchEnv
 from yarr.utils.observation_type import ObservationElement
 from yarr.utils.transition import Transition
 from yarr.utils.process_str import change_case
 
-from pyrep.const import RenderMode
-from pyrep.errors import IKError, ConfigurationPathError
-from pyrep.objects import VisionSensor, Dummy
+try:
+    from pyrep.const import RenderMode
+    from pyrep.errors import IKError, ConfigurationPathError
+    from pyrep.objects import VisionSensor, Dummy
+except ModuleNotFoundError:
+    class RenderMode:
+        OPENGL = None
+        OPENGL3 = None
+    class IKError(Exception): pass
+    class ConfigurationPathError(Exception): pass
+    VisionSensor = None
+    Dummy = None
 
 
 
