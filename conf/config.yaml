@@ -11,7 +11,7 @@ rlbench:
     episode_length: 50
     cameras: [wrist,overhead]
     camera_resolution: [128, 128]
-    scene_bounds: [0.15, -0.35, 0.10, 0.55, 0.30, 0.75]
+    scene_bounds: [0.15, -0.35, 0.20, 0.47, 0.30, 0.70]
     include_lang_goal_in_obs: True
 
 replay:
@@ -34,7 +34,7 @@ framework:
     training_iterations: 40000
     gpu: 0
     env_gpu: 0
-    logdir: /home/ceylanb/DreMa/drema_project/logs/peract
+    logdir: /home/ceylanb/DreMa/drema_project/logs/peract_v2
     logging_level: 20 # https://docs.python.org/3/library/logging.html#levels
     seeds: 1
     start_seed: 0
