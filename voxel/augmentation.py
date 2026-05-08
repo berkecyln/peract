@@ -1,7 +1,10 @@
 import numpy as np
 import torch
 from helpers import utils
-from pytorch3d import transforms as torch3d_tf
+try:
+    from pytorch3d import transforms as torch3d_tf
+except ModuleNotFoundError:
+    torch3d_tf = None
 
 
 def perturb_se3(pcd,
