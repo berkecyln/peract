@@ -31,15 +31,15 @@ framework:
     transitions_before_train: 200
     tensorboard_logging: True
     csv_logging: True
-    training_iterations: 40000
+    training_iterations: 100000
     gpu: 0
     env_gpu: 0
     logdir: /home/ceylanb/DreMa/drema_project/logs/peract_v2
     logging_level: 20 # https://docs.python.org/3/library/logging.html#levels
     seeds: 1
     start_seed: 0
-    load_existing_weights: False
-    num_weights_to_keep: 60 # older checkpoints will be deleted chronologically
+    load_existing_weights: True
+    num_weights_to_keep: 250 # older checkpoints will be deleted chronologically
     num_workers: 0
     record_every_n: 5
 
